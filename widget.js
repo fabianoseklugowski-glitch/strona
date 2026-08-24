@@ -1,5 +1,4 @@
 (function() {
-    // 1. Style CSS - wymuszone kontrastowe kolory i pełna czytelność
     const style = document.createElement('style');
     style.innerHTML = `
         .fati-chat-toggle-btn { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #374151; color: white; border: none; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; }
@@ -7,19 +6,18 @@
         .fati-chat-container.open { display: flex; }
         .fati-chat-header { background: #374151; color: white; padding: 15px; font-weight: bold; }
         .fati-chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
-        .fati-message { padding: 8px 12px; border-radius: 8px; max-width: 85%; line-height: 1.4; }
+        .fati-message { padding: 8px 12px; border-radius: 8px; max-width: 85%; line-height: 1.4; border: 1px solid #d1d5db; }
         
-        /* POPRAWKA: Mocne, kontrastowe tło i czarny, gruby tekst */
-        .fati-message.bot { background: #cbd5e1 !important; color: #000000 !important; align-self: flex-start; font-weight: 600 !important; }
+        /* Czysta biel i smolista czerń z ramką – zero wyblaknięcia */
+        .fati-message.bot { background: #ffffff !important; color: #000000 !important; align-self: flex-start; font-weight: 700 !important; }
         
-        .fati-message.user { background: #374151; color: white; align-self: flex-end; }
+        .fati-message.user { background: #374151; color: white; align-self: flex-end; border: none; }
         .fati-chat-input-area { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; }
         .fati-chat-input-area input { flex: 1; border: 1px solid #ddd; padding: 8px; border-radius: 4px; outline: none; }
         .fati-chat-input-area button { background: #374151; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
     `;
     document.head.appendChild(style);
 
-    // 2. Struktura HTML
     const container = document.createElement('div');
     container.innerHTML = `
         <div class="fati-chat-container" id="fatiChatContainer">
@@ -37,11 +35,8 @@
     document.body.appendChild(container);
 
     let companyContext = "";
-    
-    // Adres Twojego serwera na Renderze
     const backendUrl = "https://moj-chatbot-serwer.onrender.com";
 
-    // 3. Automatyczna analiza
     async function fatiInitContext() {
         try {
             const response = await fetch(`${backendUrl}/analyze-website`, {
