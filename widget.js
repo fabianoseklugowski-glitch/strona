@@ -1,5 +1,5 @@
 (function() {
-    // 1. Style CSS (poprawione kolory wiadomości bota dla pełnej czytelności)
+    // 1. Style CSS - wymuszone kontrastowe kolory i pełna czytelność
     const style = document.createElement('style');
     style.innerHTML = `
         .fati-chat-toggle-btn { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #374151; color: white; border: none; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; }
@@ -8,7 +8,10 @@
         .fati-chat-header { background: #374151; color: white; padding: 15px; font-weight: bold; }
         .fati-chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
         .fati-message { padding: 8px 12px; border-radius: 8px; max-width: 85%; line-height: 1.4; }
-        .fati-message.bot { background: #e2e8f0; color: #0f172a; align-self: flex-start; font-weight: 500; }
+        
+        /* POPRAWKA: Mocne, kontrastowe tło i czarny, gruby tekst */
+        .fati-message.bot { background: #cbd5e1 !important; color: #000000 !important; align-self: flex-start; font-weight: 600 !important; }
+        
         .fati-message.user { background: #374151; color: white; align-self: flex-end; }
         .fati-chat-input-area { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; }
         .fati-chat-input-area input { flex: 1; border: 1px solid #ddd; padding: 8px; border-radius: 4px; outline: none; }
@@ -35,7 +38,7 @@
 
     let companyContext = "";
     
-    // Adres dopasowany idealnie do Twojego serwera na Renderze
+    // Adres Twojego serwera na Renderze
     const backendUrl = "https://moj-chatbot-serwer.onrender.com";
 
     // 3. Automatyczna analiza
