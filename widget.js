@@ -1,23 +1,29 @@
 (function() {
+    // 1. Style CSS - dopasowane ciemne tło okna, idealna czytelność
     const style = document.createElement('style');
     style.innerHTML = `
-        .fati-chat-toggle-btn { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #374151; color: white; border: none; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; }
-        .fati-chat-container { position: fixed; bottom: 90px; right: 20px; width: 320px; height: 450px; background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); display: none; flex-direction: column; overflow: hidden; z-index: 9998; font-family: sans-serif; }
+        .fati-chat-toggle-btn { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #3b82f6; color: white; border: none; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 9999; font-weight: bold; font-size: 16px; }
+        .fati-chat-container { position: fixed; bottom: 90px; right: 20px; width: 340px; height: 480px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; flex-direction: column; overflow: hidden; z-index: 9998; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .fati-chat-container.open { display: flex; }
-        .fati-chat-header { background: #374151; color: white; padding: 15px; font-weight: bold; }
-        .fati-chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
-        .fati-message { padding: 8px 12px; border-radius: 8px; max-width: 85%; line-height: 1.4; border: 1px solid #d1d5db; }
+        .fati-chat-header { background: #0f172a; color: #f8fafc; padding: 15px; font-weight: bold; border-bottom: 1px solid #334155; font-size: 14px; }
+        .fati-chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 13px; background: #0f172a; }
+        .fati-message { padding: 10px 14px; border-radius: 8px; max-width: 85%; line-height: 1.4; }
         
-        /* Czysta biel i smolista czerń z ramką – zero wyblaknięcia */
-        .fati-message.bot { background: #ffffff !important; color: #000000 !important; align-self: flex-start; font-weight: 700 !important; }
+        /* WIADOMOŚCI BOTA: Ciemne, wyraźne tło i ŚNIEŻNOBIAŁY, POGRUBIONY TEKST */
+        .fati-message.bot { background: #334151 !important; color: #ffffff !important; align-self: flex-start; font-weight: 600 !important; border: 1px solid #475569; }
         
-        .fati-message.user { background: #374151; color: white; align-self: flex-end; border: none; }
-        .fati-chat-input-area { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; }
-        .fati-chat-input-area input { flex: 1; border: 1px solid #ddd; padding: 8px; border-radius: 4px; outline: none; }
-        .fati-chat-input-area button { background: #374151; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+        /* WIADOMOŚCI UŻYTKOWNIKA: Niebieskie, wyraziste */
+        .fati-message.user { background: #3b82f6 !important; color: #ffffff !important; align-self: flex-end; font-weight: 600 !important; }
+        
+        .fati-chat-input-area { padding: 12px; background: #1e293b; border-top: 1px solid #334155; display: flex; gap: 8px; }
+        .fati-chat-input-area input { flex: 1; background: #0f172a; border: 1px solid #475569; color: #ffffff; padding: 9px 12px; border-radius: 6px; outline: none; font-size: 13px; }
+        .fati-chat-input-area input::placeholder { color: #94a3b8; }
+        .fati-chat-input-area button { background: #3b82f6; color: white; border: none; padding: 9px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .fati-chat-input-area button:hover { background: #2563eb; }
     `;
     document.head.appendChild(style);
 
+    // 2. Struktura HTML
     const container = document.createElement('div');
     container.innerHTML = `
         <div class="fati-chat-container" id="fatiChatContainer">
@@ -37,6 +43,7 @@
     let companyContext = "";
     const backendUrl = "https://moj-chatbot-serwer.onrender.com";
 
+    // 3. Automatyczna analiza
     async function fatiInitContext() {
         try {
             const response = await fetch(`${backendUrl}/analyze-website`, {
