@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse # <--- DODANE
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import httpx
 from bs4 import BeautifulSoup
@@ -28,7 +28,12 @@ class ChatRequest(BaseModel):
     company_context: str
     question: str
 
-# <--- DODANE: Udostępnianie pliku widget.js publicznie przez serwer Render
+# Serwowanie nowego pliku widget-v3.js (omija cache przeglądarki)
+@app.get("/widget-v3.js")
+async def get_widget_v3():
+    return FileResponse("widget-v3.js", media_type="application/javascript")
+
+# (Opcjonalnie zostawiamy też stary, gdyby był gdzieś używany)
 @app.get("/widget.js")
 async def get_widget():
     return FileResponse("widget.js", media_type="application/javascript")
